@@ -69,12 +69,12 @@ In the first part of the program, I have implemented the following integrators:
 | ![](images/results2/killeroo.png) | ![](images/results2/killerooGlass.png) |
 
 
-## Building
+## Building and running the project
 
 Build by making a build directory (i.e. `build/`), run `cmake` in that dir, and then use `make` to build the desired target.
 
-Example:
-
+#### First compilation:
+  
 ``` bash
 > mkdir build
 > cd build
@@ -82,3 +82,17 @@ Example:
 > make -j6
 ```
 
+#### Recompile:
+
+``` bash
+> cmake ../mds3d_td1 -DCMAKE_BUILD_TYPE=Debug
+```
+
+#### Run:
+
+``` bash
+> ./m3d_raytracer ../m3d_td1/data/troisSpheres.scn
+```
+
+## References
+https://www.labri.fr/perso/pbenard/teaching/mondes3d/
