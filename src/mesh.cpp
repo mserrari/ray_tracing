@@ -200,7 +200,56 @@ long int Mesh::ms_itersection_count = 0;
 bool Mesh::intersectFace(const Ray& ray, Hit& hit, int faceId) const
 {
     ms_itersection_count++;
-    return true;
+
+    Vector3f v0 = vertexOfFace(faceId, 0).position;
+    Vector3f v1 = vertexOfFace(faceId, 1).position;
+    Vector3f v2 = vertexOfFace(faceId, 2).position;
+
+    Vector3f v0v1 = v1 - v0;
+    Vector3f v0v2 = v2 - v0;
+
+
+
+    // check if ray and plane are parallel ?
+    //Vector3f n = (v0v1.cross(v0v2)).normalized();
+    //float nProjectRay = n.dot(ray.direction);
+
+    //if (fabs(nProjectRay) < float(1e-6)) // almost 0 
+    //    return false; // they are parallel so they don't intersect ! 
+
+    Vector3f pvec = ray.direction.cross(v0v2);
+    float det = v0v1.dot(pvec);
+
+    if (det < float(1e-6)) return false;
+
+    float detInverse = 1 / det;
+
+    Vector3f tvec = ray.origin - v0;
+
+    // check ray is inside triangle
+    float u = tvec.dot(pvec) * detInverse;
+    if (u < 0 || u > 1) return false;
+
+    Vector3f qvec = tvec.cross(v0v1);
+    float v = ray.direction.dot(qvec) * detInverse;
+    if (v < 0 || u + v > 1) return false;
+
+    float t = v0v2.dot(qvec) * detInverse;
+
+    if (t >= 0 && t < hit.t()) {
+
+        Vector3f normal = (1 - u - v) * vertexOfFace(faceId, 0).normal
+            + u * vertexOfFace(faceId, 1).normal
+            + v * vertexOfFace(faceId, 2).normal;
+
+        //Vector3f normal = (1 - u - v) * v0 + u * v1 + v * v2;
+        hit.setT(t);
+        hit.setShape(this);
+        hit.setNormal(normal);
+        return true;
+    }
+
+    return false;
 }
 
 bool Mesh::intersect(const Ray& ray, Hit& hit) const
@@ -210,9 +259,11 @@ bool Mesh::intersect(const Ray& ray, Hit& hit) const
     if( (!::intersect(ray, m_AABB, tMin, tMax, normal)) || tMin>hit.t())
         return false;
 
-    hit.setT(tMin);
-    hit.setNormal(normal);
-    hit.setShape(this);
+    for (size_t i = 0; i < nbFaces(); i++) {
+        intersectFace(ray, hit, i);
+    }
+
+    //m_BVH->intersect(ray, hit);
 
     return true;
 }

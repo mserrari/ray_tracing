@@ -2,6 +2,7 @@
 
 <scene>
   <color name="background" value="0.2, 0.2, 0.2"/>
+
   <integrator type="whitted"/>
 
   <camera type="perspective">
@@ -46,7 +47,7 @@
   </shape>
 
   <shape type="mesh">
-   <string name="filename" value="tw.obj"/>
+   <string name="filename" value="tw503.obj"/>
    <material type="diffuse">
      <color name="diffuse" value="0.8, 0.4, 0.4" />
    </material>

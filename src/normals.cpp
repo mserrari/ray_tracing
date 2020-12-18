@@ -18,7 +18,7 @@ public:
             //return Color3f(h.shape()->material()->ambientColor());
 
             Vector3f n = h.normal();
-            return Color3f(std::abs(n.x()), std::abs(n.y()), std::abs(n.z()));
+            return Color3f(fabs(n.x()), fabs(n.y()), fabs(n.z()));
         }
 
         //return Color3f(0.f);
