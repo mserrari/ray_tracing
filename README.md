@@ -78,14 +78,14 @@ Build by making a build directory (i.e. `build/`), run `cmake` in that dir, and 
 ``` bash
 > mkdir build
 > cd build
-> cmake ../mds3d_td1
+> cmake ../ray_tracing
 > make -j6
 ```
 
 #### Recompile:
 
 ``` bash
-> cmake ../mds3d_td1 -DCMAKE_BUILD_TYPE=Debug
+> cmake ../ray_tracing -DCMAKE_BUILD_TYPE=Debug
 ```
 
 #### Run:

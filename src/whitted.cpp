@@ -5,33 +5,35 @@ class WhittedIntegrator : public Integrator {
 public:
     WhittedIntegrator(const PropertyList &props) {
         /* No parameters this time */
-        m_maxRecursion = props.getInteger("maxRecursion", 0);
+        m_maxRecursion = props.getInteger("maxRecursion", 4);
     }
 
     Color3f Li(const Scene *scene, const Ray &ray) const {
-        /** TODO : Find the surface that is visible in the requested direction
-                   Return its ambiant color */
-    
-        /// Reached the end of the recursion
+
+        Color3f radiance = Color3f::Zero();
+
+        // stopping criteria is recursion level > maxRecursion
+        // STOP 
         if (ray.recursionLevel > m_maxRecursion) {
-            return Color3f(0.0f);
+            return radiance;
         }
 
-        /// Integrate the ray
-        Hit hit = Hit();
+        /* Find the surface that is visible in the requested direction */
+
+        Hit hit;
         scene->intersect(ray, hit);
         LightList lights = scene->lightList();
 
         if (hit.foundIntersection())
         {
+            // DIRECT LIGHTING IMPLEMENTATION goes here 
             Vector3f n = hit.normal();
             Vector3f viewDir = -ray.direction;
             Point3f secondOrigin = ray.at(hit.t()) + hit.normal() * float(1e-4);
             Point3f x = ray.at(hit.t());
 
-            Color3f color = Color3f(0.0f);
+            //Color3f color = Color3f(0.0f);
 
-            /// Looping over light sources
             for (size_t i = 0; i < lights.size(); i++)
             {
                 float lightDist = 0.0f;
@@ -47,18 +49,22 @@ public:
                 if (shadowH.foundIntersection() && shadowH.t() < lightDist) continue;
 
                 Color3f rho = hit.shape()->material()->brdf(viewDir, lightDir, n);
-                color = color + rho * std::max(n.dot(lightDir), 0.0f) * lightInt;
+                radiance += rho * std::max(n.dot(lightDir), 0.0f) * lightInt;
             }
 
             Vector3f bounceDir = (-viewDir + (2 * n * n.dot(viewDir))).normalized();
             Ray newRay = Ray(x + n * float(1e-4), bounceDir);
-            newRay.recursionLevel = ray.recursionLevel + 1;
 
-            return color + hit.shape()->material()->reflectivity() * Li(scene, newRay);
+            // Decrease recursion level
+            newRay.recursionLevel = ray.recursionLevel - 1;
+
+            return radiance + hit.shape()->material()->reflectivity() * Li(scene, newRay);
+
         }
-        else {
-            return Color3f(scene->backgroundColor());
-        }
+        else if (ray.recursionLevel == 0)
+            return scene->backgroundColor();
+
+        return radiance;
     }
 
     std::string toString() const {
