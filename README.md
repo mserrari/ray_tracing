@@ -49,20 +49,24 @@ In the first part of the program, I have implemented the following integrators:
 | ![](images/results/troisSpheres_flat.png) | ![](images/results/troisSpheres_normals.png) | ![](images/results/troisSpheres_direct.png) | ![](images/results/troisSpheres_whitted.png) |
 | ![](images/results/tasSpheres_flat.png) | ![](images/results/tasSpheres_normals.png) | ![](images/results/tasSpheres_direct.png) | ![](images/results/tasSpheres_whitted.png) |
 
-## Missing features
+## Rendering Mesh
 
-### Textures
-| Petanque | Terre & Lune | Deux Plans | Tas Spheres |
-|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
-| ![](images/results2/petanque.png) | ![](images/results2/terre-lune.png) | ![](images/results2/deuxPlans.png) | ![](images/results2/tasSpheres.png) |
-
-### Rendering Mesh
-
-* BVH
+* BVH : When using BVH the time gains very remarkable (from 60s to 1s)
 
 | Face Normals | Barycentriques Normals | Increasing Mesh Resolution |
 |:-------------------------:|:-------------------------:|:-------------------------:|
 | ![](images/results2/maillage.png) | ![](images/results2/maillage1.png) | ![](images/results2/maillage2.png) |
+
+## Missing features
+
+### Textures
+| Petanque ⬜️ | Terre & Lune ⬜️ | Deux Plans ✅ | Tas Spheres ⬜️ |
+|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
+| ![](images/results2/petanque.png) | ![](images/results2/terre-lune.png) | ![](images/results2/deuxPlans.png) | ![](images/results2/tasSpheres.png) |
+
+### Rednering killeroo
+
+When trying to render killeroo, the program runs into an allocation error.
 
 | Killeroo | Killeroo Glass |
 |:-------------------------:|:-------------------------:|
