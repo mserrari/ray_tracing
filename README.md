@@ -64,7 +64,7 @@ In the first part of the program, I have implemented the following integrators:
 |:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
 | ![](images/results2/petanque.png) | ![](images/results2/terre-lune.png) | ![](images/results2/deuxPlans.png) | ![](images/results2/tasSpheres.png) |
 
-### Rednering killeroo
+### Rendering killeroo
 
 When trying to render killeroo, the program runs into an allocation error.
 
